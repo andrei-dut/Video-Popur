@@ -10,7 +10,6 @@ class InitPopur {
         </div>`;
     btnCloseId = '#btnClosePopur';
     btnClosePopur = '';
-    openedPopur = false;
 
     openPopurWithThis ;
     closePopurWithThis ;
@@ -28,37 +27,37 @@ class InitPopur {
         this.closePopurWithThis = this.closePopur.bind(this);
 
         this.btnOpenPopur.addEventListener('click', this.openPopurWithThis);
+        document.addEventListener('keydown', this.closePopurWithThis)
     }
 
     openPopur() {
-        this.openedPopur = true;
         this.wrapPopur.append(this.div);
         this.btnClosePopur = document.querySelector(this.btnCloseId);
 
         this.btnClosePopur.addEventListener('click', this.closePopurWithThis)
-        document.addEventListener('keydown', this.closePopurWithThis)
-
     }
 
     closePopur(e) {
-        this.openedPopur = false;
         if(e.code === 'Escape') {
-            document.querySelector('.wrapper-popur').remove();
-            document.removeEventListener('keydown', this.closePopurWithThis);
+            this.destroy(true);
         } 
         if(e.type === 'click') {
-            document.querySelector('.wrapper-popur').remove();
+            this.destroy(true);
         }
-
     }
 
-    destroy() {
-        this.btnOpenPopur.removeEventListener('click', this.openPopurWithThis);
+    destroy(close) {
+        let popur = document.querySelector('.wrapper-popur');
+        
+        if(!close) {
+            this.btnOpenPopur.removeEventListener('click', this.openPopurWithThis);
+            document.removeEventListener('keydown', this.closePopurWithThis)
+        }
         if(this.btnClosePopur) {
             this.btnClosePopur.removeEventListener('click', this.closePopurWithThis);
             this.btnClosePopur = '';
         }
-        if(this.openedPopur) document.querySelector('.wrapper-popur').remove();
+        if(popur) popur.remove();
     }
 }
 
